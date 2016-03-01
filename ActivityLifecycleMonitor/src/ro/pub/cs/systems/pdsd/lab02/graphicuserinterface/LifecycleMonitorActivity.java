@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 
@@ -70,11 +71,16 @@ public class LifecycleMonitorActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lifecycle_monitor);
         
+        if(savedInstanceState != null) {
+        	Log.d(Constants.TAG, "onCreate() method was invoked - other activities to be resumed");
+        } else {
+        	Log.d(Constants.TAG, "onCreate() method was invoked - created for the first time");
+        }
+        
         Button okButton = (Button)findViewById(R.id.ok_button);
         okButton.setOnClickListener(buttonClickListener);
         Button cancelButton = (Button)findViewById(R.id.cancel_button);
         cancelButton.setOnClickListener(buttonClickListener);
-        Log.d(Constants.TAG, "onCreate() method was invoked");
     }    
 
     @Override
@@ -95,4 +101,80 @@ public class LifecycleMonitorActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		Log.d(Constants.TAG, "onDestroy method was invoked");
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		Log.d(Constants.TAG, "onPause method was invoked");
+	}
+
+	@Override
+	protected void onRestart() {
+		// TODO Auto-generated method stub
+		super.onRestart();
+		Log.d(Constants.TAG, "onRestart method was invoked");
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		Log.d(Constants.TAG, "onResume method was invoked");
+	}
+
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		Log.d(Constants.TAG, "onStart method was invoked");
+	}
+
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		Log.d(Constants.TAG, "onStop method was invoked");
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		// TODO Auto-generated method stub
+		super.onSaveInstanceState(outState);
+		
+		EditText usernameEditText = (EditText)findViewById(R.id.username_edit_text);
+		EditText passwordEditText = (EditText)findViewById(R.id.password_edit_text);
+		
+		CheckBox checkBox = (CheckBox) findViewById(R.id.remember_me_checkbox);
+		
+		if(checkBox.isChecked()) {
+			outState.putString(Constants.PASSWORD_EDIT_TEXT, passwordEditText.getText().toString());
+			outState.putString(Constants.USERNAME_EDIT_TEXT, usernameEditText.getText().toString());
+		}
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onRestoreInstanceState(savedInstanceState);
+		
+		EditText usernameEditText = (EditText)findViewById(R.id.username_edit_text);
+		EditText passwordEditText = (EditText)findViewById(R.id.password_edit_text);
+		CheckBox checkBox = (CheckBox) findViewById(R.id.remember_me_checkbox);
+		
+
+		passwordEditText.setText(savedInstanceState.getCharSequence(Constants.PASSWORD_EDIT_TEXT));
+		usernameEditText.setText(savedInstanceState.getCharSequence(Constants.USERNAME_EDIT_TEXT));
+		checkBox.setChecked(false);
+		
+	}
+	
+	
 }
